@@ -7,6 +7,7 @@ branding:
 outputs:
   changed_files:
     description: "All files changed in the PR that passed the whitespace check"
+    value: ${{ steps.changed-files.outputs.all_changed_files }}
 runs:
   using: "composite"
   steps:
@@ -30,6 +31,3 @@ runs:
         exit $ret_val
     - id: changed-files
       uses: tj-actions/changed-files@v37
-    - id: set-output
-      shell: bash
-      run: echo "{changed_files}={${{steps.changed-files.outputs.all_changed_files}}}" >> $GITHUB_OUTPUT
