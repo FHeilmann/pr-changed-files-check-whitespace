@@ -14,7 +14,8 @@ runs:
       uses: tj-actions/changed-files@v37
       with:
         separator: ","
-    - run: |
+    - shell: bash
+      run: |
         ret_val=0
         IFS=$',' 
         read -a MODIFIED_FILES_ARRAY <<< "${{steps.changed-files-comma.outputs.all_changed_files}}"
@@ -26,9 +27,8 @@ runs:
         done
         unset IFS
         exit $ret_val
-      shell:
-        bash
     - id: changed-files
       uses: tj-actions/changed-files@v37
     - id: set-output
+      shell: bash
       run: echo "{changed_files}={${{steps.changed-files.outputs.all_changed_files}}}" >> $GITHUB_OUTPUT
