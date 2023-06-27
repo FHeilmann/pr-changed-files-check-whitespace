@@ -1,5 +1,9 @@
-name: 'Check whitespace in filenames of PR'
-description: 'This action checks whether any of the files changed in a PR contain whitespace. If so, the action returns an error, otherwise, it returns the changed files'
+name: Check whitespace in filenames of PR
+author: FHeilmann
+description: This action checks whether any of the files changed in a PR contain whitespace. If so, the action returns an error, otherwise, it returns the changed files
+branding:
+  icon: 'search'
+  color: 'red'
 outputs:
   changed_files:
     description: "All files changed in the PR that passed the whitespace check"
