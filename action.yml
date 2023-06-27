@@ -1,0 +1,30 @@
+name: 'Check whitespace in filenames of PR'
+description: 'This action checks whether any of the files changed in a PR contain whitespace. If so, the action returns an error, otherwise, it returns the changed files'
+outputs:
+  changed_files:
+    description: "All files changed in the PR that passed the whitespace check"
+runs:
+  using: "composite"
+  steps:
+    - id: changed-files-comma
+      uses: tj-actions/changed-files@v37
+      with:
+        separator: ","
+    - run: |
+        ret_val=0
+        IFS=$',' 
+        read -a MODIFIED_FILES_ARRAY <<< "${{steps.changed-files-comma.outputs.all_changed_files}}"
+        for file in "${MODIFIED_FILES_ARRAY[@]}"; do
+          if [[ $file = *[[:space:]]* ]]; then
+            echo "The following file contains whitespace: $file"
+            ret_val=1
+          fi
+        done
+        unset IFS
+        exit $ret_val
+      shell:
+        bash
+    - id: changed-files
+      uses: tj-actions/changed-files@v37
+    - id: set-output
+      run: echo "{changed_files}={${{steps.changed-files.outputs.all_changed_files}}}" >> $GITHUB_OUTPUT
