@@ -18,6 +18,7 @@ runs:
     - name: check-whitespace
       shell: bash
       run: |
+        echo "::group::check-whitespace"
         ret_val=0
         IFS=$',' 
         read -a MODIFIED_FILES_ARRAY <<< "${{steps.changed-files-comma.outputs.all_changed_files}}"
@@ -28,6 +29,7 @@ runs:
           fi
         done
         unset IFS
+        echo "::endgroup::"
         exit $ret_val
     - id: changed-files
       uses: tj-actions/changed-files@v37
